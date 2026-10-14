@@ -1,199 +1,183 @@
+
 package com.drs.drs.initial.model;
 
+import com.drs.drs.initial.database.DatabaseConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-/**
- * Shared repository for departments.
- *
- * Stores department information so that availability
- * changes remain available while navigating between
- * screens during the current application session.
- */
 public class DepartmentRepository {
 
     private static final ObservableList<Department> departments =
             FXCollections.observableArrayList();
 
     static {
-
-        departments.add(
-                new Department(
-                        "DEPT-001",
-                        "Fire and Emergency",
-                        "Fire and Emergency",
-                        "Phone: 000, Email: fire@drs.gov",
-                        "Available"
-                )
-        );
-
-        departments.add(
-                new Department(
-                        "DEPT-002",
-                        "City Hospital",
-                        "Hospital",
-                        "Phone: 1300-HOSPITAL, Email: hospital@drs.gov",
-                        "Available"
-                )
-        );
-
-        departments.add(
-                new Department(
-                        "DEPT-003",
-                        "Police Department",
-                        "Police",
-                        "Phone: 131, Email: police@drs.gov",
-                        "Busy"
-                )
-        );
-
-        departments.add(
-                new Department(
-                        "DEPT-004",
-                        "Transportation Authority",
-                        "Transportation",
-                        "Phone: 1800-TRANSPORT, Email: transport@drs.gov",
-                        "Available"
-                )
-        );
-
-        departments.add(
-                new Department(
-                        "DEPT-005",
-                        "Water Supply Corporation",
-                        "Water Supply",
-                        "Phone: 1300-WATER, Email: water@drs.gov",
-                        "Unavailable"
-                )
-        );
-
-        departments.add(
-                new Department(
-                        "DEPT-006",
-                        "Waste Management",
-                        "Waste Management",
-                        "Phone: 1800-WASTE, Email: waste@drs.gov",
-                        "Available"
-                )
-        );
-
-        departments.add(
-                new Department(
-                        "DEPT-007",
-                        "School District",
-                        "Schools",
-                        "Phone: 1800-SCHOOL, Email: schools@drs.gov",
-                        "Busy"
-                )
-        );
-
-        departments.add(
-                new Department(
-                        "DEPT-008",
-                        "Law Enforcement",
-                        "Law Enforcement",
-                        "Phone: 132, Email: law@drs.gov",
-                        "Available"
-                )
-        );
-
-        departments.add(
-                new Department(
-                        "DEPT-009",
-                        "Utilities Department",
-                        "Utilities",
-                        "Phone: 1300-UTILITIES, Email: utilities@drs.gov",
-                        "Available"
-                )
-        );
-
-        departments.add(
-                new Department(
-                        "DEPT-010",
-                        "Search and Rescue",
-                        "Search and Rescue",
-                        "Phone: 000-SAR, Email: sar@drs.gov",
-                        "Busy"
-                )
-        );
+        loadDepartments();
     }
 
-
-    /**
-     * Prevent creation of repository objects.
-     */
     private DepartmentRepository() {
     }
 
+    /**
+     * Loads all departments from MySQL.
+     */
+    public static void loadDepartments() {
+
+        String sql = """
+            SELECT department_id, name, type,
+                   contact_details, availability
+            FROM departments
+            ORDER BY department_id
+            """;
+
+        try (Connection connection =
+                     DatabaseConnection.getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql);
+             ResultSet resultSet =
+                     statement.executeQuery()) {
+
+            ObservableList<Department> loaded =
+                    FXCollections.observableArrayList();
+
+            while (resultSet.next()) {
+
+                Department department = new Department(
+                        resultSet.getString("department_id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("type"),
+                        resultSet.getString("contact_details"),
+                        resultSet.getString("availability")
+                );
+
+                loaded.add(department);
+            }
+
+            departments.setAll(loaded);
+
+            System.out.println(
+                    "Loaded " + departments.size()
+                    + " departments from MySQL."
+            );
+
+        } catch (SQLException e) {
+            throw new IllegalStateException(
+                    "Failed to load departments from MySQL.", e
+            );
+        }
+    }
 
     /**
-     * Returns all departments.
-     *
-     * @return shared observable department list
+     * Returns the shared JavaFX department list.
      */
     public static ObservableList<Department> getDepartments() {
-
         return departments;
     }
 
-
     /**
      * Finds a department by ID.
-     *
-     * @param departmentId department identifier
-     * @return matching Department or null
      */
-    public static Department findById(
-            String departmentId) {
+    public static Department findById(String departmentId) {
 
         if (departmentId == null) {
             return null;
         }
 
-
         for (Department department : departments) {
 
-            if (department
-                    .getDepartmentId()
-                    .equalsIgnoreCase(
-                            departmentId.trim())) {
+            if (department.getDepartmentId()
+                    .equalsIgnoreCase(departmentId.trim())) {
 
                 return department;
             }
         }
 
-
         return null;
     }
 
-
     /**
-     * Finds the first department matching
-     * the supplied department type.
-     *
-     * @param type department type
-     * @return matching Department or null
+     * Finds the first department matching a type.
      */
-    public static Department findByType(
-            String type) {
+    public static Department findByType(String type) {
 
         if (type == null) {
             return null;
         }
 
-
         for (Department department : departments) {
 
-            if (department
-                    .getType()
-                    .equalsIgnoreCase(
-                            type.trim())) {
+            if (department.getType()
+                    .equalsIgnoreCase(type.trim())) {
 
                 return department;
             }
         }
 
-
         return null;
+    }
+
+    /**
+     * Updates department availability in MySQL
+     * and then updates the JavaFX object.
+     */
+    public static void updateAvailability(
+            String departmentId,
+            String newAvailability) {
+
+        if (newAvailability == null ||
+                !(newAvailability.equals("Available") ||
+                  newAvailability.equals("Busy") ||
+                  newAvailability.equals("Unavailable"))) {
+
+            throw new IllegalArgumentException(
+                    "Invalid department availability."
+            );
+        }
+
+        Department department = findById(departmentId);
+
+        if (department == null) {
+            throw new IllegalArgumentException(
+                    "Department not found: " + departmentId
+            );
+        }
+
+        String sql = """
+            UPDATE departments
+            SET availability = ?
+            WHERE department_id = ?
+            """;
+
+        try (Connection connection =
+                     DatabaseConnection.getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+
+            statement.setString(1, newAvailability);
+            statement.setString(2, departmentId);
+
+            int updated = statement.executeUpdate();
+
+            if (updated != 1) {
+                throw new IllegalStateException(
+                        "Department was not updated in MySQL."
+                );
+            }
+
+            department.setAvailability(newAvailability);
+
+            System.out.println(
+                    "Updated department " + departmentId
+                    + " to " + newAvailability
+            );
+
+        } catch (SQLException e) {
+            throw new IllegalStateException(
+                    "Failed to update department availability.", e
+            );
+        }
     }
 }
