@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ScrollPane?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.drs.drs.initial.controller.AssessmentController"
+            fitToWidth="true"
+            style="-fx-border-color: #ddd;">
+
+    <VBox spacing="15"
+          prefWidth="800"
+          prefHeight="1000">
+
+        <padding>
+            <Insets top="25" right="35" bottom="25" left="35"/>
+        </padding>
+
+        <!-- ========== HEADER ========== -->
+        <Label text="🚨 Disaster Assessment &amp; Prioritisation"
+               style="-fx-font-size: 26px; -fx-font-weight: bold;"/>
+
+        <Separator style="-fx-padding: 5;"/>
+
+        <!-- ========== INPUT SECTION ========== -->
+        <Label text="Assessment Input"
+               style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+
+        <GridPane hgap="15" vgap="12">
+
+            <!-- Incident ID -->
+            <Label text="Incident ID:"
+                   GridPane.columnIndex="0"
+                   GridPane.rowIndex="0"
+                   style="-fx-font-weight: bold;"/>
+
+            <TextField fx:id="incidentIdField"
+                       promptText="Enter incident ID (e.g. INC-001)"
+                       prefWidth="350"
+                       GridPane.columnIndex="1"
+                       GridPane.rowIndex="0"/>
+
+            <!-- People Affected -->
+            <Label text="People Affected:"
+                   GridPane.columnIndex="0"
+                   GridPane.rowIndex="1"
+                   style="-fx-font-weight: bold;"/>
+
+            <TextField fx:id="peopleAffectedField"
+                       promptText="Enter number of people affected"
+                       prefWidth="350"
+                       GridPane.columnIndex="1"
+                       GridPane.rowIndex="1"/>
+
+            <!-- Impact Level -->
+            <Label text="Impact Level:"
+                   GridPane.columnIndex="0"
+                   GridPane.rowIndex="2"
+                   style="-fx-font-weight: bold;"/>
+
+            <ComboBox fx:id="impactLevelComboBox"
+                      promptText="Select impact level"
+                      prefWidth="350"
+                      GridPane.columnIndex="1"
+                      GridPane.rowIndex="2"/>
+
+            <!-- Access Condition -->
+            <Label text="Access Condition:"
+                   GridPane.columnIndex="0"
+                   GridPane.rowIndex="3"
+                   style="-fx-font-weight: bold;"/>
+
+            <ComboBox fx:id="accessConditionComboBox"
+                      promptText="Select access condition"
+                      prefWidth="350"
+                      GridPane.columnIndex="1"
+                      GridPane.rowIndex="3"/>
+
+            <!-- Assistance Needs -->
+            <Label text="Assistance Needs:"
+                   GridPane.columnIndex="0"
+                   GridPane.rowIndex="4"
+                   style="-fx-font-weight: bold;"/>
+
+            <TextField fx:id="assistanceNeedsField"
+                       promptText="Enter assistance required"
+                       prefWidth="350"
+                       GridPane.columnIndex="1"
+                       GridPane.rowIndex="4"/>
+
+            <!-- Assessment Notes -->
+            <Label text="Assessment Notes:"
+                   GridPane.columnIndex="0"
+                   GridPane.rowIndex="5"
+                   style="-fx-font-weight: bold;"/>
+
+            <TextArea fx:id="assessmentNotesArea"
+                      promptText="Enter assessment observations"
+                      prefWidth="350"
+                      prefHeight="80"
+                      wrapText="true"
+                      GridPane.columnIndex="1"
+                      GridPane.rowIndex="5"/>
+
+        </GridPane>
+
+        <!-- ========== ACTION BUTTON ========== -->
+        <Button fx:id="assessButton"
+                text="📊 Calculate Assessment"
+                prefWidth="200"
+                prefHeight="45"
+                style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10;"/>
+
+        <!-- ========== RESULTS SECTION ========== -->
+        <Separator style="-fx-padding: 10;"/>
+
+        <Label text="📈 Assessment Results"
+               style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+
+        <!-- Results Grid -->
+        <GridPane hgap="20" vgap="15"
+                  style="-fx-border-color: #e0e0e0; -fx-border-radius: 5; -fx-background-color: #f5f5f5; -fx-padding: 15;">
+
+            <!-- Impact Level Result -->
+            <Label text="Calculated Impact Level:"
+                   GridPane.columnIndex="0"
+                   GridPane.rowIndex="0"
+                   style="-fx-font-weight: bold; -fx-font-size: 12px;"/>
+
+            <Label fx:id="calculatedImpactLevelLabel"
+                   text="Not assessed"
+                   GridPane.columnIndex="1"
+                   GridPane.rowIndex="0"
+                   style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+            <!-- Priority Result -->
+            <Label text="Recommended Priority:"
+                   GridPane.columnIndex="0"
+                   GridPane.rowIndex="1"
+                   style="-fx-font-weight: bold; -fx-font-size: 12px;"/>
+
+            <Label fx:id="priorityLabel"
+                   text="Not assessed"
+                   GridPane.columnIndex="1"
+                   GridPane.rowIndex="1"
+                   style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+            <!-- Response Time Result -->
+            <Label text="Estimated Response Time:"
+                   GridPane.columnIndex="0"
+                   GridPane.rowIndex="2"
+                   style="-fx-font-weight: bold; -fx-font-size: 12px;"/>
+
+            <Label fx:id="responseTimeLabel"
+                   text="-- hours"
+                   GridPane.columnIndex="1"
+                   GridPane.rowIndex="2"
+                   style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+        </GridPane>
+
+        <!-- ========== REQUIRED RESOURCES SECTION ========== -->
+        <Label text="Required Resources:"
+               style="-fx-font-weight: bold; -fx-font-size: 12px;"/>
+
+        <TextArea fx:id="requiredResourcesArea"
+                  promptText="Resources will be displayed here after assessment"
+                  prefWidth="700"
+                  prefHeight="120"
+                  wrapText="true"
+                  editable="false"
+                  style="-fx-control-inner-background: #f9f9f9; -fx-font-size: 11px;"/>
+
+        <!-- ========== ASSESSMENT SUMMARY SECTION ========== -->
+        <Label text="📋 Complete Assessment Summary:"
+               style="-fx-font-weight: bold; -fx-font-size: 12px;"/>
+
+        <TextArea fx:id="assessmentSummaryArea"
+                  promptText="Full assessment summary will appear here"
+                  prefWidth="700"
+                  prefHeight="180"
+                  wrapText="true"
+                  editable="false"
+                  style="-fx-control-inner-background: #f0f8ff; -fx-font-size: 11px; -fx-font-family: monospace;"/>
+
+        <!-- ========== MESSAGE LABEL ========== -->
+        <Label fx:id="messageLabel"
+               text="Ready for assessment"
+               wrapText="true"
+               style="-fx-text-fill: #666; -fx-font-size: 11px;"/>
+
+        <!-- ========== ACTION BUTTONS ========== -->
+        <HBox spacing="10">
+            <Button fx:id="backButton"
+                    text="← Back to Dashboard"
+                    prefWidth="180"
+                    prefHeight="40"
+                    style="-fx-font-size: 12px;"/>
+        </HBox>
+
+    </VBox>
+
+</ScrollPane>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" 
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.drs.drs.initial.controller.DashboardController"
+            fitToWidth="true"
+            vbarPolicy="AS_NEEDED"
+            hbarPolicy="NEVER">
+
+    <VBox spacing="20" 
+          style="-fx-padding: 25; -fx-background-color: #F0F4F8;"
+          VBox.vgrow="ALWAYS">
+
+        <!-- HEADER SECTION -->
+        <VBox spacing="5">
+            <Label text="DISASTER RESPONSE SYSTEM (DRS)" 
+                   style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #1F5B99;">
+                <font>
+                    <Font name="Segoe UI Bold" size="32.0"/>
+                </font>
+            </Label>
+            <Label fx:id="welcomeLabel"
+                   text="Welcome to DRS"
+                   style="-fx-font-size: 14px; -fx-text-fill: #555555;"/>
+        </VBox>
+
+        <!-- SYSTEM STATUS CARD -->
+        <VBox spacing="10" 
+              style="-fx-border-color: #28A745; -fx-border-width: 2; -fx-border-radius: 8; -fx-padding: 15; -fx-background-color: #E8F5E9;">
+            <Label text="SYSTEM STATUS" 
+                   style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1B5E20;"/>
+            <Label fx:id="systemStatusLabel"
+                   text="System Status: OPERATIONAL"
+                   style="-fx-font-size: 13px; -fx-text-fill: #2E7D32;"/>
+        </VBox>
+
+        <!-- MAIN FUNCTIONS HEADER -->
+        <Label text="MAIN FUNCTIONS" 
+               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #1F5B99;"/>
+
+        <!-- CRITICAL FUNCTIONS ROW 1 -->
+        <HBox spacing="15" style="-fx-alignment: TOP_CENTER;">
+
+            <!-- Report Disaster Card -->
+            <VBox spacing="10" 
+                  prefWidth="280"
+                  style="-fx-border-color: #FF6B6B; -fx-border-width: 2; -fx-border-radius: 8; -fx-padding: 20; -fx-background-color: #FFE6E6;">
+                <Label text="REPORT DISASTER" 
+                       style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #8B0000;"/>
+                <Label text="Submit a new disaster report to the system"
+                       style="-fx-font-size: 11px; -fx-text-fill: #555555;"
+                       wrapText="true"/>
+                <Button fx:id="reportDisasterButton"
+                        text="REPORT DISASTER"
+                        prefWidth="240"
+                        style="-fx-padding: 12px; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-color: #FF6B6B; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;"/>
+            </VBox>
+
+            <!-- Assessment and Prioritization Card -->
+            <VBox spacing="10" 
+                  prefWidth="280"
+                  style="-fx-border-color: #4CAF50; -fx-border-width: 2; -fx-border-radius: 8; -fx-padding: 20; -fx-background-color: #E8F5E9;">
+                <Label text="ASSESS AND PRIORITIZE" 
+                       style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #1B5E20;"/>
+                <Label text="Quick assessment and prioritized response"
+                       style="-fx-font-size: 11px; -fx-text-fill: #555555;"
+                       wrapText="true"/>
+                <Button fx:id="assessPrioritiseButton"
+                        text="ASSESS INCIDENT"
+                        prefWidth="240"
+                        style="-fx-padding: 12px; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;"/>
+            </VBox>
+
+            <!-- Manage Departments Card -->
+            <VBox spacing="10" 
+                  prefWidth="280"
+                  style="-fx-border-color: #2196F3; -fx-border-width: 2; -fx-border-radius: 8; -fx-padding: 20; -fx-background-color: #E3F2FD;">
+                <Label text="MANAGE DEPARTMENTS" 
+                       style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #0D47A1;"/>
+                <Label text="Coordinate departments and resources"
+                       style="-fx-font-size: 11px; -fx-text-fill: #555555;"
+                       wrapText="true"/>
+                <Button fx:id="manageDepartmentsButton"
+                        text="DEPARTMENTS"
+                        prefWidth="240"
+                        style="-fx-padding: 12px; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;"/>
+            </VBox>
+
+        </HBox>
+
+        <!-- ADDITIONAL FUNCTIONS ROW 2 -->
+        <HBox spacing="15" style="-fx-alignment: TOP_CENTER;">
+
+            <!-- View Incidents Card -->
+            <VBox spacing="10" 
+                  prefWidth="280"
+                  style="-fx-border-color: #FF9800; -fx-border-width: 2; -fx-border-radius: 8; -fx-padding: 20; -fx-background-color: #FFF3E0;">
+                <Label text="VIEW INCIDENTS" 
+                       style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #E65100;"/>
+                <Label text="Track and monitor active incidents"
+                       style="-fx-font-size: 11px; -fx-text-fill: #555555;"
+                       wrapText="true"/>
+                <Button fx:id="viewIncidentsButton"
+                        text="VIEW INCIDENTS"
+                        prefWidth="240"
+                        style="-fx-padding: 12px; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-color: #FF9800; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;"/>
+            </VBox>
+
+            <!-- Manage Response Tasks Card -->
+            <VBox spacing="10" 
+                  prefWidth="280"
+                  style="-fx-border-color: #9C27B0; -fx-border-width: 2; -fx-border-radius: 8; -fx-padding: 20; -fx-background-color: #F3E5F5;">
+                <Label text="MANAGE RESPONSE TASKS" 
+                       style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #4A148C;"/>
+                <Label text="Assign and track response tasks"
+                       style="-fx-font-size: 11px; -fx-text-fill: #555555;"
+                       wrapText="true"/>
+                <Button fx:id="manageTodosButton"
+                        text="MANAGE TASKS"
+                        prefWidth="240"
+                        style="-fx-padding: 12px; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-color: #9C27B0; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;"/>
+            </VBox>
+            
+            <!-- Priority Calculator Card -->
+            <VBox spacing="10" 
+                  prefWidth="280"
+                  style="-fx-border-color: #9C27B0; -fx-border-width: 2; -fx-border-radius: 8; -fx-padding: 20; -fx-background-color: #F3E5F5;">
+                <Label text="PRIORITY CALCULATOR" 
+                       style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #4A148C;"/>
+                <Label text="Intelligent priority score analysis"
+                       style="-fx-font-size: 11px; -fx-text-fill: #555555;"
+                       wrapText="true"/>
+                <Button fx:id="priorityCalculatorButton"
+                        text="CALCULATE PRIORITY"
+                        prefWidth="240"
+                        style="-fx-padding: 12px; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-color: #9C27B0; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;"/>
+            </VBox>
+            <!-- Auto Task Generator Card -->
+            <VBox spacing="10" 
+                  prefWidth="280"
+                  style="-fx-border-color: #FF9800; -fx-border-width: 2; -fx-border-radius: 8; -fx-padding: 20; -fx-background-color: #FFF3E0;">
+                <Label text="AUTO TASK GENERATOR" 
+                       style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #E65100;"/>
+                <Label text="Generate optimized response tasks"
+                       style="-fx-font-size: 11px; -fx-text-fill: #555555;"
+                       wrapText="true"/>
+                <Button fx:id="autoTaskGeneratorButton"
+                        text="GENERATE TASKS"
+                        prefWidth="240"
+                        style="-fx-padding: 12px; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-color: #FF9800; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;"/>
+            </VBox>
+
+            <!-- Logout Card -->
+            <VBox spacing="10" 
+                  prefWidth="280"
+                  style="-fx-border-color: #757575; -fx-border-width: 2; -fx-border-radius: 8; -fx-padding: 20; -fx-background-color: #EEEEEE;">
+                <Label text="ACCOUNT" 
+                       style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #424242;"/>
+                <Label text="Sign out of your account"
+                       style="-fx-font-size: 11px; -fx-text-fill: #555555;"
+                       wrapText="true"/>
+                <Button fx:id="logoutButton"
+                        text="LOGOUT"
+                        prefWidth="240"
+                        style="-fx-padding: 12px; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-color: #757575; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;"/>
+            </VBox>
+
+        </HBox>
+
+        <!-- FOOTER SECTION -->
+        <VBox spacing="5" style="-fx-alignment: CENTER; -fx-padding: 20;">
+            <Label text="DRS v1.0 - Disaster Response System" 
+                   style="-fx-font-size: 12px; -fx-text-fill: #999999;"/>
+            <Label text="2026 Emergency Response Team" 
+                   style="-fx-font-size: 11px; -fx-text-fill: #CCCCCC;"/>
+        </VBox>
+
+    </VBox>
+
+</ScrollPane>

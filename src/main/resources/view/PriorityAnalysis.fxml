@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.drs.drs.initial.features.PriorityCalculatorController"
+            fitToWidth="true"
+            vbarPolicy="AS_NEEDED"
+            hbarPolicy="NEVER"
+            style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;">
+
+    <VBox spacing="20"
+          style="-fx-padding: 25; -fx-background-color: #F0F4F8;"
+          VBox.vgrow="ALWAYS">
+
+        <!-- HEADER -->
+        <VBox spacing="5">
+
+            <Label text="PRIORITY CALCULATOR"
+                   style="-fx-font-size: 32px;
+                          -fx-font-weight: bold;
+                          -fx-text-fill: #1F5B99;">
+                <font>
+                    <Font name="Segoe UI Bold" size="32.0"/>
+                </font>
+            </Label>
+
+            <Label text="Creative Feature #1: Intelligent Priority Analysis"
+                   style="-fx-font-size: 13px;
+                          -fx-text-fill: #666666;"/>
+
+            <Label text="Calculate optimal priority scores based on multiple disaster factors"
+                   style="-fx-font-size: 12px;
+                          -fx-text-fill: #999999;"/>
+
+        </VBox>
+
+
+        <!-- INPUT SECTION -->
+        <VBox spacing="12"
+              style="-fx-border-color: #2196F3;
+                     -fx-border-width: 2;
+                     -fx-border-radius: 8;
+                     -fx-padding: 20;
+                     -fx-background-color: #FFFFFF;">
+
+            <Label text="INPUT PARAMETERS"
+                   style="-fx-font-size: 14px;
+                          -fx-font-weight: bold;
+                          -fx-text-fill: #0D47A1;"/>
+
+
+            <!-- Incident -->
+            <VBox spacing="5">
+
+                <Label text="Select Incident:"
+                       style="-fx-font-weight: bold;"/>
+
+                <ComboBox fx:id="incidentComboBox"
+                          prefHeight="35"
+                          promptText="Select an active incident"
+                          style="-fx-padding: 8;
+                                 -fx-font-size: 12px;"/>
+
+            </VBox>
+
+
+            <!-- Impact -->
+            <VBox spacing="5">
+
+                <Label text="Impact Level:"
+                       style="-fx-font-weight: bold;"/>
+
+                <ComboBox fx:id="impactLevelComboBox"
+                          prefHeight="35"
+                          style="-fx-padding: 8;
+                                 -fx-font-size: 12px;"/>
+
+            </VBox>
+
+
+            <!-- People Affected -->
+            <VBox spacing="5">
+
+                <Label text="People Affected:"
+                       style="-fx-font-weight: bold;"/>
+
+                <Spinner fx:id="peopleAffectedSpinner"
+                         prefHeight="35"
+                         style="-fx-padding: 8;
+                                -fx-font-size: 12px;"/>
+
+            </VBox>
+
+
+            <!-- Accessibility -->
+            <VBox spacing="5">
+
+                <Label text="Accessibility Status:"
+                       style="-fx-font-weight: bold;"/>
+
+                <ComboBox fx:id="accessibilityComboBox"
+                          prefHeight="35"
+                          style="-fx-padding: 8;
+                                 -fx-font-size: 12px;"/>
+
+            </VBox>
+
+
+            <!-- Minutes Since Report -->
+            <VBox spacing="5">
+
+                <Label text="Minutes Since Report:"
+                       style="-fx-font-weight: bold;"/>
+
+                <Spinner fx:id="minutesSinceReportSpinner"
+                         prefHeight="35"
+                         style="-fx-padding: 8;
+                                -fx-font-size: 12px;"/>
+
+            </VBox>
+
+
+            <!-- Injured Count -->
+            <VBox spacing="5">
+
+                <Label text="Injured Count:"
+                       style="-fx-font-weight: bold;"/>
+
+                <Spinner fx:id="injuredCountSpinner"
+                         prefHeight="35"
+                         style="-fx-padding: 8;
+                                -fx-font-size: 12px;"/>
+
+            </VBox>
+
+        </VBox>
+
+
+        <!-- ACTION BUTTONS -->
+        <HBox spacing="10"
+              style="-fx-alignment: CENTER;">
+
+            <Button fx:id="calculateButton"
+                    text="CALCULATE PRIORITY"
+                    prefWidth="170"
+                    style="-fx-padding: 12px 20px;
+                           -fx-font-size: 12px;
+                           -fx-font-weight: bold;
+                           -fx-background-color: #2196F3;
+                           -fx-text-fill: white;
+                           -fx-cursor: hand;"/>
+
+            <Button fx:id="resetButton"
+                    text="RESET FORM"
+                    prefWidth="150"
+                    style="-fx-padding: 12px 20px;
+                           -fx-font-size: 12px;
+                           -fx-background-color: #FFC107;
+                           -fx-text-fill: black;
+                           -fx-cursor: hand;"/>
+
+            <Button fx:id="backButton"
+                    text="BACK TO DASHBOARD"
+                    prefWidth="170"
+                    style="-fx-padding: 12px 20px;
+                           -fx-font-size: 12px;
+                           -fx-background-color: #6C757D;
+                           -fx-text-fill: white;
+                           -fx-cursor: hand;"/>
+
+        </HBox>
+
+
+        <!-- MESSAGE -->
+        <Label fx:id="messageLabel"
+               text="Select an incident, enter values and click Calculate to analyze priority"
+               wrapText="true"
+               style="-fx-font-size: 12px;
+                      -fx-text-fill: #666666;"/>
+
+
+        <!-- RESULTS -->
+        <VBox spacing="15">
+
+
+            <!-- Priority Score -->
+            <VBox spacing="10"
+                  style="-fx-border-color: #2196F3;
+                         -fx-border-width: 2;
+                         -fx-border-radius: 8;
+                         -fx-padding: 15;
+                         -fx-background-color: #E3F2FD;">
+
+                <Label text="PRIORITY SCORE"
+                       style="-fx-font-size: 13px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #0D47A1;"/>
+
+                <Label fx:id="priorityScoreLabel"
+                       text="--"
+                       style="-fx-font-size: 28px;
+                              -fx-font-weight: bold;"/>
+
+            </VBox>
+
+
+            <!-- Priority Level -->
+            <VBox spacing="10"
+                  style="-fx-border-color: #FF9800;
+                         -fx-border-width: 2;
+                         -fx-border-radius: 8;
+                         -fx-padding: 15;
+                         -fx-background-color: #FFF3E0;">
+
+                <Label text="RECOMMENDED PRIORITY LEVEL"
+                       style="-fx-font-size: 13px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #E65100;"/>
+
+                <Label fx:id="priorityLevelLabel"
+                       text="--"
+                       style="-fx-font-size: 16px;"/>
+
+            </VBox>
+
+
+            <!-- Recommendations -->
+            <VBox spacing="10"
+                  style="-fx-border-color: #4CAF50;
+                         -fx-border-width: 2;
+                         -fx-border-radius: 8;
+                         -fx-padding: 15;
+                         -fx-background-color: #E8F5E9;">
+
+                <Label text="RECOMMENDATIONS"
+                       style="-fx-font-size: 13px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #1B5E20;"/>
+
+                <HBox spacing="20">
+
+                    <VBox spacing="5"
+                          prefWidth="250">
+
+                        <Label text="Response Time:"
+                               style="-fx-font-weight: bold;"/>
+
+                        <Label fx:id="responseTimeLabel"
+                               text="--"
+                               style="-fx-font-size: 12px;"/>
+
+                    </VBox>
+
+                    <VBox spacing="5"
+                          prefWidth="250">
+
+                        <Label text="Resource Allocation:"
+                               style="-fx-font-weight: bold;"/>
+
+                        <Label fx:id="resourceAllocationLabel"
+                               text="--"
+                               style="-fx-font-size: 12px;"/>
+
+                    </VBox>
+
+                </HBox>
+
+            </VBox>
+
+
+            <!-- Detailed Analysis -->
+            <VBox spacing="10"
+                  style="-fx-border-color: #9C27B0;
+                         -fx-border-width: 2;
+                         -fx-border-radius: 8;
+                         -fx-padding: 15;
+                         -fx-background-color: #F3E5F5;">
+
+                <Label text="DETAILED ANALYSIS"
+                       style="-fx-font-size: 13px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #4A148C;"/>
+
+                <TextArea fx:id="recommendationArea"
+                          prefRowCount="8"
+                          wrapText="true"
+                          editable="false"
+                          style="-fx-padding: 10;
+                                 -fx-font-size: 11px;
+                                 -fx-control-inner-background: #FFFFFF;"/>
+
+            </VBox>
+
+
+            <!-- Coordinator Confirmation -->
+            <VBox spacing="12"
+                  style="-fx-border-color: #607D8B;
+                         -fx-border-width: 2;
+                         -fx-border-radius: 8;
+                         -fx-padding: 15;
+                         -fx-background-color: #ECEFF1;">
+
+                <Label text="COORDINATOR PRIORITY CONFIRMATION"
+                       style="-fx-font-size: 13px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #37474F;"/>
+
+                <Label text="Review the recommended priority. Confirm the recommendation or select a different priority."
+                       wrapText="true"
+                       style="-fx-font-size: 12px;
+                              -fx-text-fill: #666666;"/>
+
+
+                <VBox spacing="5">
+
+                    <Label text="Coordinator Priority:"
+                           style="-fx-font-weight: bold;"/>
+
+                    <ComboBox fx:id="coordinatorPriorityComboBox"
+                              prefHeight="35"
+                              promptText="Calculate priority first"
+                              disable="true"
+                              style="-fx-padding: 8;
+                                     -fx-font-size: 12px;"/>
+
+                </VBox>
+
+
+                <Button fx:id="confirmPriorityButton"
+                        text="CONFIRM / UPDATE PRIORITY"
+                        prefWidth="230"
+                        disable="true"
+                        style="-fx-padding: 12px 20px;
+                               -fx-font-size: 12px;
+                               -fx-font-weight: bold;
+                               -fx-background-color: #455A64;
+                               -fx-text-fill: white;
+                               -fx-cursor: hand;"/>
+
+
+                <Label fx:id="confirmationMessageLabel"
+                       text="Calculate a priority recommendation before confirmation."
+                       wrapText="true"
+                       style="-fx-font-size: 12px;
+                              -fx-text-fill: #666666;"/>
+
+            </VBox>
+
+        </VBox>
+
+
+        <!-- Bottom spacing -->
+        <VBox style="-fx-padding: 10;"/>
+
+    </VBox>
+
+</ScrollPane>

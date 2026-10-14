@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.drs.drs.initial.features.AutoTaskGeneratorController"
+            fitToWidth="true"
+            vbarPolicy="AS_NEEDED"
+            hbarPolicy="NEVER"
+            style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;">
+
+    <VBox spacing="20"
+          style="-fx-padding: 25; -fx-background-color: #F0F4F8;">
+
+        <!-- ================= HEADER ================= -->
+
+        <VBox spacing="5">
+
+            <Label text="AUTO TASK GENERATOR"
+                   style="-fx-font-size: 32px;
+                          -fx-font-weight: bold;
+                          -fx-text-fill: #1F5B99;">
+
+                <font>
+                    <Font name="Segoe UI Bold" size="32.0"/>
+                </font>
+
+            </Label>
+
+            <Label text="Creative Feature #2: Intelligent Response Task Generation"
+                   style="-fx-font-size: 13px;
+                          -fx-text-fill: #666666;"/>
+
+            <Label text="Select an incident and automatically generate coordinated response tasks"
+                   style="-fx-font-size: 12px;
+                          -fx-text-fill: #999999;"/>
+
+        </VBox>
+
+
+        <!-- ================= INPUT SECTION ================= -->
+
+        <VBox spacing="12"
+              style="-fx-border-color: #9C27B0;
+                     -fx-border-width: 2;
+                     -fx-border-radius: 8;
+                     -fx-padding: 20;
+                     -fx-background-color: #FFFFFF;">
+
+            <Label text="GENERATION PARAMETERS"
+                   style="-fx-font-size: 14px;
+                          -fx-font-weight: bold;
+                          -fx-text-fill: #4A148C;"/>
+
+
+            <!-- INCIDENT -->
+
+            <VBox spacing="5">
+
+                <Label text="Incident:"
+                       style="-fx-font-weight: bold;"/>
+
+                <ComboBox fx:id="incidentComboBox"
+                          prefHeight="35"
+                          promptText="Select an active incident"
+                          style="-fx-padding: 8;
+                                 -fx-font-size: 12px;"/>
+
+                <Label text="Selecting an incident automatically loads its disaster type and priority."
+                       wrapText="true"
+                       style="-fx-font-size: 10px;
+                              -fx-text-fill: #777777;"/>
+
+            </VBox>
+
+
+            <!-- DISASTER TYPE -->
+
+            <VBox spacing="5">
+
+                <Label text="Disaster Type:"
+                       style="-fx-font-weight: bold;"/>
+
+                <ComboBox fx:id="disasterTypeComboBox"
+                          prefHeight="35"
+                          disable="true"
+                          style="-fx-padding: 8;
+                                 -fx-font-size: 12px;"/>
+
+            </VBox>
+
+
+            <!-- PRIORITY -->
+
+            <VBox spacing="5">
+
+                <Label text="Priority Level:"
+                       style="-fx-font-weight: bold;"/>
+
+                <ComboBox fx:id="priorityComboBox"
+                          prefHeight="35"
+                          disable="true"
+                          style="-fx-padding: 8;
+                                 -fx-font-size: 12px;"/>
+
+            </VBox>
+
+
+            <!-- TASK COUNT -->
+
+            <Label fx:id="taskCountLabel"
+                   text="Expected Tasks: --"
+                   style="-fx-font-size: 12px;
+                          -fx-text-fill: #2196F3;
+                          -fx-font-weight: bold;"/>
+
+        </VBox>
+
+
+        <!-- ================= BUTTONS ================= -->
+
+        <HBox spacing="10"
+              style="-fx-alignment: CENTER;">
+
+            <Button fx:id="generateButton"
+                    text="GENERATE TASKS"
+                    prefWidth="150"
+                    style="-fx-padding: 12px 20px;
+                           -fx-font-size: 12px;
+                           -fx-font-weight: bold;
+                           -fx-background-color: #9C27B0;
+                           -fx-text-fill: white;
+                           -fx-cursor: hand;"/>
+
+            <Button fx:id="resetButton"
+                    text="RESET"
+                    prefWidth="150"
+                    style="-fx-padding: 12px 20px;
+                           -fx-font-size: 12px;
+                           -fx-background-color: #FFC107;
+                           -fx-text-fill: black;
+                           -fx-cursor: hand;"/>
+
+            <Button fx:id="backButton"
+                    text="BACK TO DASHBOARD"
+                    prefWidth="150"
+                    style="-fx-padding: 12px 20px;
+                           -fx-font-size: 12px;
+                           -fx-background-color: #6C757D;
+                           -fx-text-fill: white;
+                           -fx-cursor: hand;"/>
+
+        </HBox>
+
+
+        <!-- ================= MESSAGE ================= -->
+
+        <Label fx:id="messageLabel"
+               text="Select an active incident, then click Generate Tasks"
+               wrapText="true"
+               style="-fx-font-size: 12px;
+                      -fx-text-fill: #666666;"/>
+
+
+        <!-- ================= RESULTS ================= -->
+
+        <VBox spacing="15">
+
+
+            <!-- SUMMARY -->
+
+            <VBox spacing="10"
+                  style="-fx-border-color: #2196F3;
+                         -fx-border-width: 2;
+                         -fx-border-radius: 8;
+                         -fx-padding: 15;
+                         -fx-background-color: #E3F2FD;">
+
+                <Label text="GENERATION SUMMARY"
+                       style="-fx-font-size: 13px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #0D47A1;"/>
+
+                <TextArea fx:id="summaryArea"
+                          prefRowCount="6"
+                          wrapText="true"
+                          editable="false"
+                          style="-fx-padding: 10;
+                                 -fx-font-size: 11px;
+                                 -fx-control-inner-background: #FFFFFF;"/>
+
+            </VBox>
+
+
+            <!-- GENERATED TASKS -->
+
+            <VBox spacing="10"
+                  style="-fx-border-color: #4CAF50;
+                         -fx-border-width: 2;
+                         -fx-border-radius: 8;
+                         -fx-padding: 15;
+                         -fx-background-color: #E8F5E9;">
+
+                <Label text="GENERATED RESPONSE TASKS"
+                       style="-fx-font-size: 13px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #1B5E20;"/>
+
+                <ScrollPane fitToWidth="true"
+                            vbarPolicy="AS_NEEDED"
+                            hbarPolicy="NEVER"
+                            style="-fx-border-color: #4CAF50;
+                                   -fx-border-radius: 4;">
+
+                    <VBox fx:id="tasksListContainer"
+                          spacing="10"
+                          style="-fx-padding: 10;
+                                 -fx-background-color: #FFFFFF;">
+
+                    </VBox>
+
+                </ScrollPane>
+
+            </VBox>
+
+        </VBox>
+
+
+        <!-- BOTTOM SPACING -->
+
+        <VBox style="-fx-padding: 10;"/>
+
+    </VBox>
+
+</ScrollPane>

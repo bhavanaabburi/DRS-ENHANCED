@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" 
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.drs.drs.initial.controller.ReportDisasterController"
+            fitToWidth="true"
+            vbarPolicy="AS_NEEDED"
+            hbarPolicy="NEVER"
+            style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;">
+
+    <VBox spacing="20" 
+          style="-fx-padding: 20; -fx-background-color: #F5F5F5;"
+          VBox.vgrow="ALWAYS">
+
+        <!-- ============================================= -->
+        <!-- HEADER SECTION -->
+        <!-- ============================================= -->
+        <VBox spacing="10">
+            <Label text="📋 REPORT DISASTER" 
+                   style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #1F5B99;">
+                <font>
+                    <Font name="Segoe UI Bold" size="26.0"/>
+                </font>
+            </Label>
+            <Label text="Submit a new disaster report to the emergency response system"
+                   style="-fx-font-size: 13px; -fx-text-fill: #666666;"/>
+        </VBox>
+
+        <!-- ============================================= -->
+        <!-- INPUT PANEL -->
+        <!-- ============================================= -->
+        <VBox spacing="12" 
+              style="-fx-border-color: #0066CC; -fx-border-width: 2; -fx-border-radius: 5; -fx-padding: 20; -fx-background-color: #FFFFFF; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);">
+
+            <Label text="📝 INCIDENT DETAILS" 
+                   style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #0066CC;"/>
+
+            <!-- Reported By -->
+            <VBox spacing="5">
+                <Label text="Reported By:" style="-fx-font-weight: bold; -fx-font-size: 12px;"/>
+                <TextField fx:id="reportedByField" 
+                           promptText="Enter name or ID of person reporting"
+                           style="-fx-padding: 8; -fx-font-size: 12px; -fx-border-radius: 3;"/>
+            </VBox>
+
+            <!-- Disaster Type -->
+            <VBox spacing="5">
+                <Label text="Disaster Type:" style="-fx-font-weight: bold; -fx-font-size: 12px;"/>
+                <ComboBox fx:id="disasterTypeComboBox" 
+                          prefHeight="35" 
+                          promptText="Select disaster type..."
+                          style="-fx-padding: 8; -fx-font-size: 12px; -fx-border-radius: 3;"/>
+            </VBox>
+
+            <!-- Location -->
+            <VBox spacing="5">
+                <Label text="Location:" style="-fx-font-weight: bold; -fx-font-size: 12px;"/>
+                <TextField fx:id="locationField" 
+                           promptText="Enter location/address of disaster"
+                           style="-fx-padding: 8; -fx-font-size: 12px; -fx-border-radius: 3;"/>
+            </VBox>
+
+            <!-- Impact Level -->
+            <VBox spacing="5">
+                <Label text="Impact Level:" style="-fx-font-weight: bold; -fx-font-size: 12px;"/>
+                <ComboBox fx:id="impactLevelComboBox" 
+                          prefHeight="35"
+                          promptText="Select impact level..."
+                          style="-fx-padding: 8; -fx-font-size: 12px; -fx-border-radius: 3;"/>
+            </VBox>
+
+            <!-- Assistance Needs -->
+            <VBox spacing="5">
+                <Label text="Assistance Needs (comma, semicolon, or newline separated):" 
+                       style="-fx-font-weight: bold; -fx-font-size: 12px;"/>
+                <TextArea fx:id="assistanceNeedsArea" 
+                          promptText="Example: Medical supplies, Food, Shelter, Rescue equipment"
+                          prefRowCount="4"
+                          wrapText="true"
+                          style="-fx-padding: 8; -fx-font-size: 12px; -fx-control-inner-background: #FAFAFA; -fx-border-radius: 3;"/>
+            </VBox>
+
+        </VBox>
+
+        <!-- ============================================= -->
+        <!-- ACTION BUTTONS -->
+        <!-- ============================================= -->
+        <HBox spacing="10" style="-fx-alignment: CENTER;">
+            <Button fx:id="submitButton" 
+                    text="📊 SUBMIT REPORT"
+                    prefWidth="140"
+                    style="-fx-padding: 12px 20px; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-color: #28A745; -fx-text-fill: white; -fx-cursor: hand; -fx-border-radius: 3;"/>
+            <Button fx:id="clearButton" 
+                    text="🔄 CLEAR FORM"
+                    prefWidth="140"
+                    style="-fx-padding: 12px 20px; -fx-font-size: 13px; -fx-background-color: #FFC107; -fx-text-fill: black; -fx-cursor: hand; -fx-border-radius: 3;"/>
+            <Button fx:id="backButton" 
+                    text="← BACK"
+                    prefWidth="140"
+                    style="-fx-padding: 12px 20px; -fx-font-size: 13px; -fx-background-color: #6C757D; -fx-text-fill: white; -fx-cursor: hand; -fx-border-radius: 3;"/>
+        </HBox>
+
+        <!-- ============================================= -->
+        <!-- STATUS MESSAGE -->
+        <!-- ============================================= -->
+        <Label fx:id="messageLabel" 
+               text=""
+               style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-alignment: CENTER;"/>
+
+        <!-- ============================================= -->
+        <!-- RESULTS PANEL - ATTENTION REQUIRED -->
+        <!-- ============================================= -->
+        <VBox spacing="10" 
+              style="-fx-border-color: #FF0000; -fx-border-width: 3; -fx-border-radius: 5; -fx-padding: 15; -fx-background-color: #FFE6E6;">
+            <Label text="🚨 ATTENTION STATUS" 
+                   style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #8B0000;"/>
+            <Label fx:id="requiresAttentionLabel" 
+                   text=""
+                   style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+        </VBox>
+
+        <!-- ============================================= -->
+        <!-- RESULTS PANEL - SUBMISSION INFO -->
+        <!-- ============================================= -->
+        <VBox spacing="10" 
+              style="-fx-border-color: #0066CC; -fx-border-width: 2; -fx-border-radius: 5; -fx-padding: 15; -fx-background-color: #E6F0FF;">
+            <Label text="ℹ️ SUBMISSION DETAILS" 
+                   style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #0066CC;"/>
+            <Label fx:id="submittedTimeLabel" 
+                   text=""
+                   style="-fx-font-size: 12px; -fx-text-fill: #333333;"/>
+        </VBox>
+
+        <!-- ============================================= -->
+        <!-- RESULTS PANEL - ASSISTANCE NEEDS -->
+        <!-- ============================================= -->
+        <VBox spacing="10" 
+              style="-fx-border-color: #FFA500; -fx-border-width: 2; -fx-border-radius: 5; -fx-padding: 15; -fx-background-color: #FFF5E6;">
+            <Label text="📋 IDENTIFIED ASSISTANCE NEEDS" 
+                   style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #FF8C00;"/>
+            <TextArea fx:id="assistanceNeedsDisplay" 
+                      prefRowCount="4"
+                      wrapText="true"
+                      editable="false"
+                      style="-fx-padding: 10; -fx-font-size: 12px; -fx-control-inner-background: #FFFAF0; -fx-border-radius: 3;"/>
+        </VBox>
+
+        <!-- ============================================= -->
+        <!-- RESULTS PANEL - COMPLETE SUMMARY -->
+        <!-- ============================================= -->
+        <VBox spacing="10" 
+              style="-fx-border-color: #28A745; -fx-border-width: 2; -fx-border-radius: 5; -fx-padding: 15; -fx-background-color: #E8F5E9;">
+            <Label text="✅ COMPLETE DISASTER REPORT SUMMARY" 
+                   style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #1B5E20;"/>
+            <TextArea fx:id="reportSummaryArea" 
+                      prefRowCount="10"
+                      wrapText="true"
+                      editable="false"
+                      style="-fx-padding: 12; -fx-font-size: 11px; -fx-font-family: 'Courier New'; -fx-control-inner-background: #F1F8E9; -fx-border-radius: 3;"/>
+        </VBox>
+
+        <VBox style="-fx-padding: 10;"/>
+
+    </VBox>
+
+</ScrollPane>
