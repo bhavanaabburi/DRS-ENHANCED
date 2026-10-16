@@ -128,35 +128,42 @@ try (ServerSocket server = createTLSServerFactory().createServerSocket(PORT)) {
         
     }
     
-    private static SSLServerSocketFactory createTLSServerFactory() throws Exception {
-        String passwordValue = null;    
+   private static SSLServerSocketFactory createTLSServerFactory()
+        throws Exception {
+
+    String passwordValue = System.getenv("DRS_TLS_PASSWORD");
+
     if (passwordValue == null || passwordValue.isBlank()) {
-    javax.swing.JPasswordField passwordField =
-            new javax.swing.JPasswordField();
 
-    int result = javax.swing.JOptionPane.showConfirmDialog(
-            null,
-            passwordField,
-            "Enter TLS Server Keystore Password",
-            javax.swing.JOptionPane.OK_CANCEL_OPTION,
-            javax.swing.JOptionPane.PLAIN_MESSAGE
-    );
+        javax.swing.JPasswordField passwordField =
+                new javax.swing.JPasswordField();
 
-    if (result != javax.swing.JOptionPane.OK_OPTION) {
-        throw new IllegalStateException("TLS password entry cancelled");
+        int result = javax.swing.JOptionPane.showConfirmDialog(
+                null,
+                passwordField,
+                "Enter TLS Server Keystore Password",
+                javax.swing.JOptionPane.OK_CANCEL_OPTION,
+                javax.swing.JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result != javax.swing.JOptionPane.OK_OPTION) {
+            throw new IllegalStateException(
+                    "TLS password entry cancelled"
+            );
+        }
+
+        char[] entered = passwordField.getPassword();
+
+        try {
+            passwordValue = new String(entered);
+        } finally {
+            java.util.Arrays.fill(entered, '\0');
+        }
     }
-
-    char[] entered = passwordField.getPassword();
-    try {
-        passwordValue = new String(entered);
-    } finally {
-        java.util.Arrays.fill(entered, '\0');
-    }
-}
 
     if (passwordValue == null || passwordValue.isBlank()) {
         throw new IllegalStateException(
-            "DRS_TLS_PASSWORD environment variable is not configured"
+                "TLS keystore password is required"
         );
     }
 
@@ -165,13 +172,15 @@ try (ServerSocket server = createTLSServerFactory().createServerSocket(PORT)) {
     try {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
 
-        try (FileInputStream file = new FileInputStream("tls/drs-server.p12")) {
+        try (FileInputStream file =
+                     new FileInputStream("tls/drs-server.p12")) {
             keyStore.load(file, password);
         }
 
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(
-            KeyManagerFactory.getDefaultAlgorithm()
+                KeyManagerFactory.getDefaultAlgorithm()
         );
+
         kmf.init(keyStore, password);
 
         SSLContext context = SSLContext.getInstance("TLS");

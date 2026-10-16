@@ -69,7 +69,6 @@
 
     <build>
         <plugins>
-
             <!-- JavaFX Maven Plugin -->
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -82,12 +81,9 @@
                         <option>-Djavax.net.ssl.trustStoreType=PKCS12</option>
                         <option>-Djavax.net.ssl.trustStorePassword=123456</option>
                     </options>
-                    <mainClass>
-                        com.drs.drs.initial.DRSInitial
-                    </mainClass>
+                    <mainClass>com.drs.drs.initial.DRSInitial</mainClass>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 
