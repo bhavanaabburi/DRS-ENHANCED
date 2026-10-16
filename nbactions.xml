@@ -2,32 +2,23 @@
 <actions>
     <action>
         <actionName>run</actionName>
-        <packagings>
-            <packaging>jar</packaging>
-        </packagings>
-        <goals>
-            <goal>javafx:run</goal>
-        </goals>
+        <packagings><packaging>jar</packaging></packagings>
+        <goals><goal>javafx:run</goal></goals>
     </action>
-</actions>                
-            </properties>
-        </action>
-        <action>
-            <actionName>CUSTOM-Run TLS Server</actionName>
-            <displayName>Run TLS Server</displayName>
-            <packagings>
-                <packaging>*</packaging>
-            </packagings>
-            <goals>
-                <goal>process-classes</goal>
-                <goal>org.codehaus.mojo:exec-maven-plugin:3.5.1:exec</goal>
-            </goals>
-            <properties>
-                <exec.vmArgs></exec.vmArgs>
-                <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.executable>java</exec.executable>
-                <exec.mainClass>com.drs.drs.initial.server.DRSServer</exec.mainClass>
-                <exec.classpathScope>${classPathScope}</exec.classpathScope>
-            </properties>
-        </action>
-    </actions>
+    <action>
+        <actionName>CUSTOM-Run TLS Server</actionName>
+        <displayName>Run TLS Server</displayName>
+        <packagings><packaging>*</packaging></packagings>
+        <goals>
+            <goal>process-classes</goal>
+            <goal>org.codehaus.mojo:exec-maven-plugin:3.5.1:exec</goal>
+        </goals>
+        <properties>
+            <exec.vmArgs></exec.vmArgs>
+            <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
+            <exec.executable>java</exec.executable>
+            <exec.mainClass>com.drs.drs.initial.server.DRSServer</exec.mainClass>
+            <exec.classpathScope>${classPathScope}</exec.classpathScope>
+        </properties>
+    </action>
+</actions>
