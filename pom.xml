@@ -58,11 +58,11 @@
         </dependency>
         
         <!-- MySQL JDBC Driver -->
-<dependency>
-    <groupId>com.mysql</groupId>
-    <artifactId>mysql-connector-j</artifactId>
-    <version>8.4.0</version>
-</dependency>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.4.0</version>
+        </dependency>
     </dependencies>
     
     
@@ -77,6 +77,11 @@
                 <version>0.0.8</version>
 
                 <configuration>
+                    <options>
+                        <option>-Djavax.net.ssl.trustStore=tls/drs-client-trust.p12</option>
+                        <option>-Djavax.net.ssl.trustStoreType=PKCS12</option>
+                        <option>-Djavax.net.ssl.trustStorePassword=123456</option>
+                    </options>
                     <mainClass>
                         com.drs.drs.initial.DRSInitial
                     </mainClass>

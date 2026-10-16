@@ -353,6 +353,22 @@ public class IncidentsController {
         );
 
 
+        if (!"Critical".equals(incident.getPriority()) &&
+                !java.util.List.of("Resolved", "Closed").contains(incident.getStatus())) {
+            Button escalate = new Button("Escalate Severity");
+            escalate.setDisable(!java.util.List.of("Admin", "Coordinator").contains(
+                    com.drs.drs.initial.server.DRSSession.role()));
+            escalate.setOnAction(event -> {
+                try {
+                    String newPriority = com.drs.drs.initial.server.DRSOperationsClient.escalateIncident(incident.getIncidentId());
+                    com.drs.drs.initial.model.IncidentRepository.loadIncidents();
+                    displayIncidents();
+                    messageLabel.setText("Incident " + incident.getIncidentId() + " escalated to " + newPriority);
+                } catch (Exception ex) { messageLabel.setText(ex.getMessage()); }
+            });
+            card.getChildren().add(escalate);
+        }
+
         return card;
     }
 

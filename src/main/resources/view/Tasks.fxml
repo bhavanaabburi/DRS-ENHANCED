@@ -52,6 +52,15 @@
 
         </VBox>
 
+        <!-- ADMIN / COORDINATOR: NEW UNASSIGNED TASK -->
+        <HBox spacing="10" style="-fx-alignment: CENTER_LEFT;">
+            <Button text="CREATE UNASSIGNED TASK"
+                    onAction="#createUnassignedTask"
+                    style="-fx-background-color: #7B1FA2; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 18;"/>
+            <Label text="Create a Pending task, then use Auto-Assign Department on its card."
+                   style="-fx-text-fill: #555555;"/>
+        </HBox>
+
         <!-- MESSAGE LABEL -->
         <Label fx:id="messageLabel" 
                text="Total Tasks: 8"

@@ -3,6 +3,7 @@ package com.drs.drs.initial.controller;
 import com.drs.drs.initial.model.DisasterReport;
 import com.drs.drs.initial.model.Incident;
 import com.drs.drs.initial.model.IncidentRepository;
+import com.drs.drs.initial.server.DisasterReportClient;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -189,58 +190,34 @@ public class ReportDisasterController {
                         .trim();
 
 
-        // ========== Create Disaster Report ==========
+        // Save both records atomically through the multithreaded server.
+        // The server generates both IDs and returns them only after commit.
+        final String[] saved;
+        try {
+            saved = DisasterReportClient.submit(
+                    reportedBy, disasterType, location, impactLevel, assistanceNeeds);
+        } catch (Exception e) {
+            showError("Report not saved: " + e.getMessage());
+            return;
+        }
 
-        DisasterReport report =
-                new DisasterReport(
-                        generateReportId(),
-                        reportedBy,
-                        disasterType,
-                        location,
-                        impactLevel,
-                        assistanceNeeds
-                );
+        LocalDateTime submittedAt = LocalDateTime.parse(saved[3]);
+        DisasterReport report = new DisasterReport(
+                saved[1], reportedBy, disasterType, location,
+                impactLevel, assistanceNeeds, submittedAt);
+        Incident incident = new Incident(
+                saved[2], disasterType, location,
+                createIncidentDescription(disasterType, assistanceNeeds),
+                convertImpactToPriority(impactLevel), "Active", submittedAt, 0);
 
-
-        // ========== Create Incident ==========
-
-        String incidentId =
-                IncidentRepository
-                        .generateIncidentId();
-
-
-        String priority =
-                convertImpactToPriority(
-                        impactLevel
-                );
-
-
-        String description =
-                createIncidentDescription(
-                        disasterType,
-                        assistanceNeeds
-                );
-
-
-        Incident incident =
-                new Incident(
-                        incidentId,
-                        disasterType,
-                        location,
-                        description,
-                        priority,
-                        "Active",
-                        LocalDateTime.now(),
-                        0
-                );
-
-
-        // Add incident to shared repository
-
-        IncidentRepository.addIncident(
-                incident
-        );
-
+        // Refresh the shared ObservableList through the server.
+        // A refresh failure must not falsely report a failed submission.
+        try {
+            IncidentRepository.loadIncidents();
+        } catch (Exception refreshError) {
+            System.err.println("Report saved, but incident refresh failed: "
+                    + refreshError.getMessage());
+        }
 
         // ========== Display Result ==========
 

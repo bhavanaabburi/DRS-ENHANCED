@@ -67,6 +67,7 @@ public class DatabaseInitializer {
         String createAssessmentsTable = """
             CREATE TABLE IF NOT EXISTS assessments (
                 assessment_id VARCHAR(20) PRIMARY KEY,
+                incident_id VARCHAR(20) NULL,
                 people_affected INT DEFAULT 0,
                 impact_level VARCHAR(30),
                 access_condition VARCHAR(50),

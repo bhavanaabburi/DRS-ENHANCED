@@ -121,6 +121,32 @@ public class AssessmentController {
     }
 
 
+    private void saveAssessmentThroughServer(String incidentId, int peopleAffected,
+            String impact, String access, String needs, String notes, String priority) throws IOException {
+        String[] values = {incidentId, Integer.toString(peopleAffected), impact,
+                access, needs, notes, priority};
+        StringBuilder request = new StringBuilder("SUBMIT_ASSESSMENT_V1");
+        for (String value : values) {
+            request.append('\t').append(java.util.Base64.getEncoder().encodeToString(
+                    value.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+        }
+        try (java.net.Socket socket = com.drs.drs.initial.server.TLSConnection.open()) {
+            socket.setSoTimeout(5000);
+            try (java.io.PrintWriter out = new java.io.PrintWriter(
+                    new java.io.OutputStreamWriter(socket.getOutputStream(),
+                            java.nio.charset.StandardCharsets.UTF_8), true);
+                 java.io.BufferedReader in = new java.io.BufferedReader(
+                    new java.io.InputStreamReader(socket.getInputStream(),
+                            java.nio.charset.StandardCharsets.UTF_8))) {
+                out.println(com.drs.drs.initial.server.DRSSession.wrap(request.toString()));
+                String response = in.readLine();
+                if (response == null || !response.startsWith("OK\tASM-")) {
+                    throw new IOException(response == null ? "No response from server" : response);
+                }
+            }
+        }
+    }
+
     // ========== PERFORM ASSESSMENT ==========
 
     /**
@@ -291,6 +317,17 @@ public class AssessmentController {
                 assessment
                         .calculateEstimatedResponseTime();
 
+
+        // Persist assessment and incident changes together through the DRS server.
+        // Do this before changing the JavaFX model or displaying success.
+        try {
+            saveAssessmentThroughServer(incidentId, peopleAffected, impactLevel,
+                    accessCondition, assistanceNeeds, notes, calculatedPriority);
+        } catch (Exception ex) {
+            showError("Assessment could not be saved: " + ex.getMessage());
+            clearResults();
+            return;
+        }
 
         // ========== UPDATE INCIDENT ==========
 

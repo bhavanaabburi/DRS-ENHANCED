@@ -88,6 +88,45 @@ public class TasksController {
 
     // ========== FILTER ==========
 
+    // ========== CREATE UNASSIGNED TASK ==========
+
+    @FXML
+    private void createUnassignedTask() {
+        if (!java.util.List.of("Admin", "Coordinator").contains(
+                com.drs.drs.initial.server.DRSSession.role())) {
+            messageLabel.setText("Only Admin or Coordinator can create response tasks.");
+            return;
+        }
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("New Response Task");
+        dialog.setHeaderText("Create a pending task for automatic department assignment");
+        dialog.setContentText("Task description:");
+        java.util.Optional<String> answer = dialog.showAndWait();
+        if (answer.isEmpty()) return;
+        String description = answer.get().trim();
+        if (description.isBlank() || description.length() > 250) {
+            messageLabel.setText("Enter a description between 1 and 250 characters.");
+            return;
+        }
+        try {
+            ResponseTaskRepository.loadTasks();
+            ResponseTask task = new ResponseTask(
+                    ResponseTaskRepository.generateTaskId(),
+                    description, "Pending", "Unassigned",
+                    java.time.LocalDateTime.now(),
+                    java.time.LocalDateTime.now().plusHours(2),
+                    "Awaiting automatic department assignment");
+            ResponseTaskRepository.addTask(task);
+            tasks = ResponseTaskRepository.getTasks();
+            filterComboBox.setValue("All Tasks");
+            displayTasks();
+            messageLabel.setText("Created " + task.getTaskId() + ". Click Auto-Assign Department on its card.");
+        } catch (Exception ex) {
+            messageLabel.setText("Could not create task: " + ex.getMessage());
+        }
+    }
+
     private void setupFilterComboBox() {
 
         filterComboBox.setItems(
@@ -359,6 +398,27 @@ public class TasksController {
             );
         }
 
+
+        if ("Pending".equals(task.getStatus()) &&
+                (task.getAssignedDepartment() == null || task.getAssignedDepartment().isBlank() ||
+                 java.util.List.of("Unassigned", "Not Assigned", "None").contains(task.getAssignedDepartment()))) {
+            Button assign = new Button("Auto-Assign Department");
+            assign.setDisable(!java.util.List.of("Admin", "Coordinator").contains(
+                    com.drs.drs.initial.server.DRSSession.role()));
+            assign.setOnAction(event -> {
+                try {
+                    String department = com.drs.drs.initial.server.DRSOperationsClient.assignDepartment(task.getTaskId());
+                    ResponseTaskRepository.loadTasks();
+                    tasks = ResponseTaskRepository.getTasks();
+                    filterComboBox.setValue("All Tasks");
+                    displayTasks();
+                    messageLabel.setText("Assigned " + task.getTaskId() + " to " + department);
+                } catch (Exception ex) {
+                    messageLabel.setText(ex.getMessage());
+                }
+            });
+            card.getChildren().add(assign);
+        }
 
         return card;
     }
@@ -653,6 +713,18 @@ public class TasksController {
     private void taskOperationSuccessful(
             ResponseTask task,
             String action) {
+        try {
+            ResponseTaskRepository.updateStatus(task.getTaskId(), task.getStatus());
+            tasks = ResponseTaskRepository.getTasks();
+        } catch (RuntimeException e) {
+            try { ResponseTaskRepository.loadTasks(); } catch (RuntimeException ignored) { }
+            tasks = ResponseTaskRepository.getTasks();
+            messageLabel.setText("Task update failed: " + e.getMessage());
+            messageLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-weight: bold;");
+            filterTasks();
+            return;
+        }
+
 
         System.out.println(
                 "[TASK UPDATED] "

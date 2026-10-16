@@ -10,7 +10,7 @@ public class DRSClientTest {
     public static void main(String[] args) {
 
         try (Socket socket
-                = new Socket("localhost", 5050); PrintWriter output = new PrintWriter(
+                = com.drs.drs.initial.server.TLSConnection.open(); PrintWriter output = new PrintWriter(
                         socket.getOutputStream(), true); BufferedReader input = new BufferedReader(
                         new InputStreamReader(
                                 socket.getInputStream()))) {

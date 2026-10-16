@@ -298,6 +298,10 @@ public class ResponseTask {
     }
 
 
+    public void setCompletedAt(LocalDateTime value) {
+        this.completedAt = value;
+    }
+
     public void setAssignedDepartment(
             String assignedDepartment) {
 

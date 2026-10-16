@@ -40,10 +40,11 @@ public class LoginController {
             return;
         }
 
-        if ("admin".equals(username) && "admin123".equals(password)) {
+        try {
+            com.drs.drs.initial.server.DRSSession.login(username, password);
             openDashboard();
-        } else {
-            messageLabel.setText("Invalid username or password.");
+        } catch (Exception ex) {
+            messageLabel.setText("Login failed: " + ex.getMessage());
         }
     }
 

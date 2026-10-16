@@ -25,68 +25,53 @@ public class IncidentRepository {
      * Load all incidents from MySQL.
      */
     public static void loadIncidents() {
+        // JavaFX -> TCP server -> MySQL. Do not clear the displayed
+        // list until the entire server response has been validated.
+        try (java.net.Socket socket = com.drs.drs.initial.server.TLSConnection.open()) {
+            socket.setSoTimeout(5000);
+            try (java.io.PrintWriter out = new java.io.PrintWriter(
+                    new java.io.OutputStreamWriter(socket.getOutputStream(),
+                            java.nio.charset.StandardCharsets.UTF_8), true);
+                 java.io.BufferedReader in = new java.io.BufferedReader(
+                    new java.io.InputStreamReader(socket.getInputStream(),
+                            java.nio.charset.StandardCharsets.UTF_8))) {
 
-        String sql = """
-            SELECT * FROM incidents
-            ORDER BY incident_id
-            """;
-
-        try (Connection connection =
-                     DatabaseConnection.getConnection();
-             PreparedStatement statement =
-                     connection.prepareStatement(sql);
-             ResultSet resultSet =
-                     statement.executeQuery()) {
-
-            ObservableList<Incident> loaded =
-                    FXCollections.observableArrayList();
-
-            while (resultSet.next()) {
-
-                Timestamp reported =
-                        resultSet.getTimestamp("reported_at");
-
-                Timestamp resolved =
-                        resultSet.getTimestamp("resolved_at");
-
-                LocalDateTime reportedAt =
-                        reported == null
-                        ? LocalDateTime.now()
-                        : reported.toLocalDateTime();
-
-                Incident incident = new Incident(
-                        resultSet.getString("incident_id"),
-                        resultSet.getString("disaster_type"),
-                        resultSet.getString("location"),
-                        resultSet.getString("description"),
-                        resultSet.getString("priority"),
-                        resultSet.getString("status"),
-                        reportedAt,
-                        resultSet.getInt("injured_count")
-                );
-
-                if (resolved != null) {
-                    // Incident has no setResolvedAt() method.
-                    // Resolution timestamp remains in MySQL.
+                out.println(com.drs.drs.initial.server.DRSSession.wrap("GET_INCIDENTS_V2"));
+                String header = in.readLine();
+                if (header == null || !header.matches("OK [0-9]+")) {
+                    throw new java.io.IOException("Invalid server response: " + header);
                 }
-
-                loaded.add(incident);
+                int count = Integer.parseInt(header.substring(3));
+                if (count > 100000) {
+                    throw new java.io.IOException("Unexpected incident count: " + count);
+                }
+                ObservableList<Incident> loaded = FXCollections.observableArrayList();
+                for (int row = 0; row < count; row++) {
+                    String line = in.readLine();
+                    if (line == null) throw new java.io.EOFException("Incomplete incident list");
+                    String[] encoded = line.split("\t", -1);
+                    if (encoded.length != 8) {
+                        throw new java.io.IOException("Malformed incident record " + row);
+                    }
+                    String[] fields = new String[8];
+                    for (int i = 0; i < 8; i++) {
+                        fields[i] = new String(
+                                java.util.Base64.getDecoder().decode(encoded[i]),
+                                java.nio.charset.StandardCharsets.UTF_8);
+                    }
+                    loaded.add(new Incident(
+                            fields[0], fields[1], fields[2], fields[3],
+                            fields[4], fields[5],
+                            java.time.LocalDateTime.parse(fields[6].replace(' ', 'T')),
+                            Integer.parseInt(fields[7])));
+                }
+                incidents.setAll(loaded);
+                System.out.println("Loaded " + incidents.size()
+                        + " incidents through DRS server.");
             }
-
-            incidents.setAll(loaded);
-
-            System.out.println(
-                    "Loaded " + incidents.size()
-                    + " incidents from MySQL."
-            );
-
-        } catch (SQLException e) {
-            System.err.println(
-                    "Failed to load incidents from MySQL."
-            );
+        } catch (Exception e) {
             throw new IllegalStateException(
-                    "Database loading failed.", e
-            );
+                    "Cannot load incidents through DRS server. Start DRSServer first.", e);
         }
     }
 

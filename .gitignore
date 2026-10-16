@@ -1,1 +1,6 @@
 /target/
+
+# Local TLS secrets
+/tls/
+*.p12
+*.jks

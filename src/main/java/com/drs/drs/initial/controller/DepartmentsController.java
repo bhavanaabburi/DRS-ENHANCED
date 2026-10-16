@@ -444,39 +444,16 @@ public class DepartmentsController {
      * Updates the actual Department object stored
      * inside DepartmentRepository.
      */
-    private void updateDepartmentStatus(
-            Department dept,
-            String newStatus) {
-
-        if (dept.updateAvailability(
-                newStatus)) {
-
-            System.out.println(
-                    "[DEPARTMENT STATUS UPDATED] "
-                    + dept.getName()
-                    + " → "
-                    + newStatus
-            );
-
-
-            messageLabel.setText(
-                    "✅ "
-                    + dept.getName()
-                    + " status updated to: "
-                    + newStatus
-            );
-
-            messageLabel.setStyle(
-                    "-fx-text-fill: #28A745; "
-                    + "-fx-font-weight: bold;"
-            );
-
-
-            /*
-             * Redraw the list so the status label
-             * and summary both display the new value.
-             */
+    private void updateDepartmentStatus(Department dept, String newStatus) {
+        try {
+            DepartmentRepository.updateAvailability(dept.getDepartmentId(), newStatus);
+            messageLabel.setText("✅ " + dept.getName() + " status updated to: " + newStatus);
+            messageLabel.setStyle("-fx-text-fill: #28A745; -fx-font-weight: bold;");
             applyFilters();
+        } catch (Exception e) {
+            messageLabel.setText("❌ Could not save status. Check server connection.");
+            messageLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-weight: bold;");
+            System.err.println("Department update failed: " + e.getMessage());
         }
     }
 

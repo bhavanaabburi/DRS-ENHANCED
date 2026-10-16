@@ -9,11 +9,31 @@
                 <goal>javafx:run</goal>
             </goals>
             <properties>
-                <exec.vmArgs></exec.vmArgs>
+                <exec.vmArgs>-Djavax.net.ssl.trustStore=tls/drs-client-trust.p12 -Djavax.net.ssl.trustStoreType=PKCS12 -Djavax.net.ssl.trustStorePassword=YOUR_TRUSTSTORE_PASSWORD</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.appArgs></exec.appArgs>
                 <exec.mainClass>${packageClassName}</exec.mainClass>
                 <exec.executable>java</exec.executable>
+                
+                
+            </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-Run TLS Server</actionName>
+            <displayName>Run TLS Server</displayName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:3.5.1:exec</goal>
+            </goals>
+            <properties>
+                <exec.vmArgs></exec.vmArgs>
+                <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
+                <exec.executable>java</exec.executable>
+                <exec.mainClass>com.drs.drs.initial.server.DRSServer</exec.mainClass>
+                <exec.classpathScope>${classPathScope}</exec.classpathScope>
             </properties>
         </action>
     </actions>

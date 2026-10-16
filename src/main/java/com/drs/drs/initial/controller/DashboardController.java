@@ -46,7 +46,14 @@ public class DashboardController {
         systemStatusLabel.setText("System Status: OPERATIONAL ✓");
         
         // Setup button handlers
-        setupButtonHandlers();   
+        setupButtonHandlers();
+        String role = com.drs.drs.initial.server.DRSSession.role();
+        if ("Responder".equals(role)) {
+            assessPrioritiseButton.setDisable(true);
+            manageDepartmentsButton.setDisable(true);
+            autoTaskGeneratorButton.setDisable(true);
+        }
+        welcomeLabel.setText("Welcome to DRS - " + (role == null ? "User" : role));   
         
         System.out.println("[DashboardController] Initialization complete");
         
@@ -192,6 +199,7 @@ private void openAutoTaskGenerator() {
      */
     @FXML
     private void logout() {
+        com.drs.drs.initial.server.DRSSession.logout();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
             Parent root = loader.load();
